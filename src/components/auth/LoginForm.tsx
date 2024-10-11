@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import LoginInput from './LoginInput'
 import AuthBtn from './AuthBtn'
-import { AuthCredentials } from '../../model/Auth'
+import { AuthCredentials } from '../../model/AuthCredentials'
 import User from '../../assets/icons/User.svg'
 import Lock from '../../assets/icons/Lock.svg'
 import { useNavigate } from 'react-router-dom'
@@ -24,7 +24,7 @@ export default function LoginForm() {
     try {
       const token = await login(data)
       loginAction(token)
-      navigate('/')
+      navigate(-1)
     } catch (error) {
       console.error('로그인 에러:', error)
       alert('로그인 중 오류가 발생했습니다.')

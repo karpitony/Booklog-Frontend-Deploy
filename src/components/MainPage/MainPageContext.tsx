@@ -12,7 +12,7 @@ export default function MainPageContext() {
     <h1 
       className={cn(
         "w-fit text-4xl md:text-6xl xl:text-8xl text-[#2B5877]",
-        "mt-14 md:mt-20 xl:mt-32"
+        "mt-14 md:mt-20 xl:mt-32 cursor-pointer select-none"
       )}
       style={{ letterSpacing: '0.1em' }}
     >
@@ -20,7 +20,7 @@ export default function MainPageContext() {
     </h1>
     <h2 className={cn(
       "w-fit text-base md:text-2xl xl:text-4xl text-[#918F8F]",
-      'mb-6 md:mb-0'
+      'mb-6 md:mb-0 cursor-pointer select-none'
     )}>
       join our community and share your book reviews.
     </h2>

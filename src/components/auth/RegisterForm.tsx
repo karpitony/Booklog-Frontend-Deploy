@@ -5,9 +5,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { registerSchema } from '../../validation/RegisterSchema'
 import RegisterInput from './RegisterInput'
-import Back from '../../assets/icons/Back.svg'
-import { AuthCredentials } from '../../model/Auth'
+import Back from '../../assets/icons/BackForRegister.svg'
+import { AuthCredentials } from '../../model/AuthCredentials'
 import { signUp } from '../../services/AuthService'
+import { AuthRequest } from '../../model/AuthRequest'
 
 export default function RegisterForm() {
   const navigate = useNavigate()
@@ -31,10 +32,26 @@ export default function RegisterForm() {
     return navigate('/login')
   }
 
+  const toAuthRequest = (data: AuthCredentials): AuthRequest => {
+    return {
+      id: data.username,
+      name: data.username,
+      password: data.password,
+    }
+  }
+
   const onSubmit = async (data: AuthCredentials) => {
-    await signUp(data)
-    alert('회원가입 확인')
-    navigate('/login')
+    const authRequestData = toAuthRequest(data)
+
+    try {
+      const response = await signUp(authRequestData)
+
+      console.log('회원가입 응답:', response)
+
+      navigate('/login')
+    } catch (error) {
+      console.error('회원가입 중 오류 발생:', error)
+    }
   }
 
   return (

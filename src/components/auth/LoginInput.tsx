@@ -19,6 +19,7 @@ export default function LoginInput({
     <div className="flex flex-row border-b-[1px] border-b-[#918f8f] gap-4 py-4 px-3">
       <img src={icon} alt="Input Icon" className="" />
       <input
+        type={name === 'password' ? 'password' : 'text'}
         {...register(name, { required })}
         className="w-full placeholder-[#918f8f] focus:outline-none"
         placeholder={placeholder}

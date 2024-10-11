@@ -47,15 +47,18 @@ export default function SearchBar({ onSearch, searchText }: SearchBarProps) {
           onKeyDown={handleKeyDown}
           onChange={handleInputChange}
           className={cn(
-            'w-full p-2 text-center', // 반응형 너비
-            'text-base md:text-xl xl:text-3xl focus:outline-none'
+            'w-full p-2 text-left', // 반응형 너비
+            'text-base md:text-xl xl:text-2xl focus:outline-none'
           )}
         />
-        <button onClick={handleButtonClick} className="absolute right-0 mr-2">
+        <button 
+          onClick={handleButtonClick} 
+          className="absolute right-0 top-3 md:top-0 mr-2"
+        >
           <img 
             src={MagnifyingGlass} 
             alt="Search" 
-            className="w-4 md:w-6 h-4 md:h-6" 
+            className="w-4 md:w-6 xl:w-8 h-4 md:h-6 xl:h-8" 
           />
         </button>
       </div>

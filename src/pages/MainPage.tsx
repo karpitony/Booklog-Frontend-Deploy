@@ -22,7 +22,7 @@ export default function MainPage() {
         onSearch={handleSearch} 
         searchText={searchText}
       />
-    
+      <hr className='mx-2 md:mx-20 mt-6 md:mt-10 border-t-2'/>
       <div>
         {isSearch ? <SearchResult searchTerm={searchText} /> : <CurrentlyTrendingBook/>}
       </div>

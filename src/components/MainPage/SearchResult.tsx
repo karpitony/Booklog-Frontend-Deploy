@@ -26,7 +26,7 @@ export default function SearchResult({ searchTerm }: SearchResultProps) {
 
       {/* 검색 결과가 있을 때만 헤더 표시 */}
       {!loading && !error && books.length > 0 && (
-        <div className="text-left max-w-5xl mx-auto px-4">
+        <div className="text-left max-w-5xl mx-auto px-4 text-[#4E4D4D]">
           <h2 className='text-xl md:text-3xl font-semibold pr-2 md:pr-4 inline'>{searchTerm}</h2>
           <p className='text-lg md:text-2xl inline'>검색 결과 <span className='pl-1 text-[#EC6B53]'>{books.length}건</span></p>
         </div>

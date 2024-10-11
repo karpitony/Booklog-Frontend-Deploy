@@ -1,8 +1,10 @@
-import { AuthCredentials } from '../model/Auth'
+import { AuthCredentials } from '../model/AuthCredentials'
+import { AuthRequest } from '../model/AuthRequest'
+import { AuthResponse } from '../model/AuthResponse'
+import apiClient from '../config/ApiClient'
 
-export const signUp = async (data: AuthCredentials): Promise<void> => {
-  // 추후 회원가입 로직 추가 예정
-  console.log('회원가입 요청:', data)
+export const signUp = (user: AuthRequest) => {
+  return apiClient.post<AuthResponse>('/users/signup', user)
 }
 
 export const login = async (data: AuthCredentials): Promise<string> => {
