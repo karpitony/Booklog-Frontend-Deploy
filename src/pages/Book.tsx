@@ -12,7 +12,14 @@ export default function Book() {
   const { isLogin } = useAuthStore()
 
   const gotoEditor = () => {
-    isLogin ? navigate('/editor') : navigate('/login')
+    if (isLogin) {
+      const url = bookData?.isbn && bookData.title
+        ? `/editor?isbn=${encodeURIComponent(bookData.isbn)}&bookTitle=${encodeURIComponent(bookData.title)}`
+        : '/editor';
+      navigate(url);
+    } else {
+      navigate('/login');
+    }
   }
 
   if (error) {

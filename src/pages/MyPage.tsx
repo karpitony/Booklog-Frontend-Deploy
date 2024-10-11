@@ -2,6 +2,7 @@ import cn from "../libs/cn";
 import NoBook from "../components/MyPage/NoBook";
 import BookList from "../components/MyPage/BookList";
 import Pen from '../assets/icons/Pen.svg';
+import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
   
@@ -9,6 +10,8 @@ export default function MyPage() {
   const userName = '홍길동';
   let bookCount = 4;
   const bookReportCount = 15;
+
+  const navigate = useNavigate()
 
   return (
     <>
@@ -29,7 +32,9 @@ export default function MyPage() {
           <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-6 md:mb-10 inline">
             내가 읽은 책
           </h2>
-          <button className={cn(
+          <button
+            onClick={() => navigate('/editor')} 
+            className={cn(
             "bg-[#2B5877] text-white px-4 py-2 md:py-3 rounded-lg",
             "text-xs md:text-sm font-semibold mb-6 md:mb-10 flex items-center"
           )}>

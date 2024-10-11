@@ -1,15 +1,22 @@
-import { useState, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import DefaultThubnail from '../../assets/images/DefaultThubnail.png';
 import cn from '../../libs/cn';
-import SearchBar from './BookReportHeader/SearchBar';
+import Search from './Search';
 
-export default function BookReportHeaderEditor() {
-  const [title, setTitle] = useState<string>(''); 
-  const [thumbnail, setThumbnail] = useState<string>('');
-  const [readBookTitle, setReadBookTitle] = useState<string>('');
+interface BookReportHeaderEditorProps {
+  title: string;
+  setTitle: (value: string) => void;
+  thumbnail: string;
+  setThumbnail: (value: string) => void;
+  bookIsbn: string;
+  setBookIsbn: (value: string) => void;
+}
+
+export default function BookReportHeaderEditor(
+  {title, setTitle, thumbnail, setThumbnail, bookIsbn, setBookIsbn}: BookReportHeaderEditorProps) {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -18,10 +25,15 @@ export default function BookReportHeaderEditor() {
     }
   };
 
-  const handleSearch = (searchText: string) => {
-    console.log('Search Text:', searchText);
-    // 검색어 처리 로직
+  const handleThumbnailClick = () => {
+    fileInputRef.current?.click();
   };
+
+  useEffect(() => {
+    if (bookIsbn) {
+      console.log('ISBN:', bookIsbn);
+    }
+  }, [bookIsbn]);
 
   return (
     <div className={cn(
@@ -73,17 +85,13 @@ export default function BookReportHeaderEditor() {
             <img
               src={thumbnail || DefaultThubnail} 
               alt="썸네일" 
+              onClick={handleThumbnailClick}
               className="w-14 h-14 rounded-lg" 
             />
           </div>
         </div>
-      
-        {/* SearchBar 컴포넌트 */}
-        <SearchBar 
-          readBookTitle={readBookTitle} // 책 이름을 props로 전달
-          setReadBookTitle={setReadBookTitle} // 책 이름 업데이트 함수 전달
-          onSearch={handleSearch} // 검색 함수 전달
-        />
+
+        <Search setBookIsbn={setBookIsbn}/>
       </div>
     </div>
   );
