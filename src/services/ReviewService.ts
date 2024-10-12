@@ -93,7 +93,7 @@ export const getReviewsByBookId = async (
 ): Promise<ReviewListResponse | ErrorResponse> => {
   try {
     const response = await apiClient.get<ReviewListResponse>(
-      `/reviews/lists/${request.bookId}`
+      `/reviews/list/${request.bookId}`
     )
     return response.data
   } catch (error) {
