@@ -1,8 +1,20 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AuthHeader from '../components/auth/AuthHeader'
 import AuthImg from '../assets/images/AuthImg.svg'
 import RegisterForm from '../components/auth/RegisterForm'
+import { useAuthStore } from '../stores/UseCurrentUserStore'
 
 export default function Register() {
+  const navigate = useNavigate()
+  const { isLogin } = useAuthStore()
+
+  useEffect(() => {
+    if (isLogin) {
+      navigate('/')
+    }
+  }, [isLogin, navigate])
+
   return (
     <div className="h-dvh">
       <AuthHeader />

@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import MagnifyingGlass from '../../../assets/icons/MagnifyingGlass.svg';
+import { searchBooks } from '../../../services/BackendBookApi';
 
 interface SearchBarProps {
   readBookTitle: string;
@@ -30,6 +31,17 @@ export default function SearchBar({ readBookTitle, onSearch, setReadBookTitle }:
     
     // 검색어를 부모 컴포넌트에 전달
     onSearch(readBookTitle);
+
+    const searchBookFromBackend = async () => {
+      console.log('검색어:', readBookTitle);
+      try {
+        const response = await searchBooks({ page: 1, size: 10, keyword: readBookTitle });
+        console.log(response);
+      } catch (error) {
+        console.error('책 검색 중 오류 발생:', error);
+      }
+    }
+    searchBookFromBackend();
   };
 
   return (

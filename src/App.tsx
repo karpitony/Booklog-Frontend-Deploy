@@ -1,11 +1,11 @@
-import Routers from './Routers.tsx';
+import Routers from './Routers.tsx'
 
 function App() {
   return (
     <>
       <Routers />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

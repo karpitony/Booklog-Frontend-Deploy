@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useSearchBookByName } from '../../hooks/UseSearchBookbyName';
 import { BookData } from '../../model/BookData';
 import BookCardComponent from '../common/BookCardComponent';
@@ -8,10 +9,11 @@ interface SearchResultProps {
 
 export default function SearchResult({ searchTerm }: SearchResultProps) {
   const { books, error, loading } = useSearchBookByName(searchTerm);
+  const navigate = useNavigate();
 
   const handleBookClick = (isbn: string) => {
     const bookSlug = isbn.toString();
-    window.open(`/book/${bookSlug}`, '_blank'); // 새 탭에서 열기
+    navigate(`/book/${bookSlug}`);
   };
 
   return (

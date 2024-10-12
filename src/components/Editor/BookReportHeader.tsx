@@ -6,8 +6,8 @@ import Search from './Search';
 interface BookReportHeaderEditorProps {
   title: string;
   setTitle: (value: string) => void;
-  thumbnail: string;
-  setThumbnail: (value: string) => void;
+  thumbnail: File | string | undefined; // thumbnail 타입 수정
+  setThumbnail: (value: File | string | undefined) => void;
   bookIsbn: string;
   setBookIsbn: (value: string) => void;
 }
@@ -16,12 +16,11 @@ export default function BookReportHeaderEditor(
   {title, setTitle, thumbnail, setThumbnail, bookIsbn, setBookIsbn}: BookReportHeaderEditorProps) {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  
+
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setThumbnail(imageUrl); // 이미지 미리보기
+      setThumbnail(file); // File로 설정
     }
   };
 
@@ -35,6 +34,8 @@ export default function BookReportHeaderEditor(
     }
   }, [bookIsbn]);
 
+  const thumbnailUrl = typeof thumbnail === 'string' ? thumbnail : thumbnail ? URL.createObjectURL(thumbnail) : DefaultThubnail;
+
   return (
     <div className={cn(
       "p-4 md:p-8 flex justify-center",
@@ -43,7 +44,7 @@ export default function BookReportHeaderEditor(
       <div className="hidden md:block mr-10 text-left max-w-36">
         <h2 className='text-xl md:text-2xl text-[#2B5877]'>썸네일</h2>
         <img
-          src={thumbnail || DefaultThubnail} 
+          src={thumbnailUrl} 
           alt="썸네일" 
           className="x-24 md:x-32 xl:w-36 h-24 md:h-32 xl:h-36 rounded-xl shadow-lg" 
         />
@@ -83,7 +84,7 @@ export default function BookReportHeaderEditor(
           <div className="flex flex-col items-start md:hidden ml-3">
             <h2 className="text-center text-base text-[#2B5877] mb-2">썸네일</h2>
             <img
-              src={thumbnail || DefaultThubnail} 
+              src={thumbnailUrl} 
               alt="썸네일" 
               onClick={handleThumbnailClick}
               className="w-14 h-14 rounded-lg" 

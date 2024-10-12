@@ -2,12 +2,12 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchBookData as fetchBookDetails } from '../services/BookService';
 import { HiDotsVertical } from "react-icons/hi";
+import { getReview, deleteReview } from '../services/ReviewService';
 import cn from '../libs/cn';
 import Pen from '../assets/icons/Pen.svg';
 import TrashCan from '../assets/icons/TrashCan.svg';
 import DefaultThumbnail from '../assets/images/DefaultThubnail.png';
 import GoBack from '../assets/icons/GoBack.svg';
-import axios from 'axios';
 
 interface ArticleData {
   title: string;
@@ -31,29 +31,45 @@ export default function Article() {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!articleSlug) return;
+useEffect(() => {
+  if (!articleSlug) return;
 
-    if (articleSlug === 'test') {
-      setArticleData({
-        title: '스벨트는 우주 최강 프레임워크인 것 같다.',
-        context: '아무래도 리액트를 다 스벨트로 갈아엎어 버리고 싶다. 나는 스벨트를 할 줄 모른다.',
-        bookIsbn: '9791193926161',
-        date: '2021-01-01',
-        thumbnail: undefined,
-      });
-    } else {
-      const fetchArticleData = async () => {
-        try {
-          const response = await axios.get(`/api/article/${articleSlug}`);
-          setArticleData(response.data);
-        } catch (error) {
-          setError('게시글 데이터를 가져오는 중 오류가 발생했습니다.');
+  if (articleSlug === 'test') {
+    setArticleData({
+      title: '스벨트는 우주 최강 프레임워크인 것 같다.',
+      context: '아무래도 리액트를 다 스벨트로 갈아엎어 버리고 싶다. 나는 스벨트를 할 줄 모른다.',
+      bookIsbn: '9791193926161',
+      date: '2021-01-01',
+      thumbnail: undefined,
+    });
+  } else {
+    const getArticleData = async () => {
+      try {
+        const reviewId = Number(articleSlug);
+        const response = await getReview(reviewId);
+
+        if ('code' in response && 'message' in response) {
+          // ErrorResponse 타입일 경우
+          setError('게시글 정보를 가져오는 중 오류가 발생했습니다.');
+        } else {
+          // ReviewDetailResponse 타입일 경우
+          const tempData = {
+            title: response.title,
+            context: response.content,
+            bookIsbn: response.id.toString(),
+            date: response.createdAt,
+            thumbnail: response.file?.physicalPath,
+          };
+          setArticleData(tempData);
         }
-      };
-      fetchArticleData();
-    }
-  }, [articleSlug]);
+      } catch (err) {
+        console.error(err);
+        setError('게시글 정보를 가져오는 중 오류가 발생했습니다.');
+      }
+    };
+    getArticleData();
+  }
+}, [articleSlug]);
 
   useEffect(() => {
     if (!articleData?.bookIsbn) return;
@@ -93,11 +109,25 @@ export default function Article() {
   const { title: bookTitle } = bookData;
 
   const onEdit = () => {
-    alert('수정하기');
+    navigate(`/editor/?articleId=${articleSlug}`);
   };
 
   const onDelete = () => {
-    alert('삭제하기');
+    const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
+    if (confirmDelete) {
+      const deleteArticle = async () => {
+        try {
+          const response = await deleteReview(Number(articleSlug));
+          // 성공 시 response는 void이므로 바로 navigate
+          alert('게시글이 삭제되었습니다.');
+          navigate(-1);
+        } catch (error) {
+          // 에러가 발생하면 알림 표시
+          alert('게시글 삭제 중 오류가 발생했습니다.');
+        }
+      };
+      deleteArticle();
+    }
   };
 
   return (

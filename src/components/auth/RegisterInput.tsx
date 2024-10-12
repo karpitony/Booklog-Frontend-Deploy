@@ -21,6 +21,7 @@ export default function RegisterInput({
   const handleCheckClick = () => {
     const inputElement = document.getElementsByName(name)[0] as HTMLInputElement
     const username = inputElement.value
+    console.log(username)
     if (!username) {
       alert('아이디를 입력하세요.')
       return

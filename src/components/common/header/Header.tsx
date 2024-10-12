@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PiSignIn, PiSignOut } from 'react-icons/pi'
 import cn from '../../../libs/cn.ts'
-import { useAuthStore } from '../../../stores/UseAuthStore.ts'
+import { useAuthStore } from '../../../stores/UseCurrentUserStore.ts'
 
 interface HeaderProps {
   isBordered?: boolean
@@ -11,7 +11,7 @@ interface HeaderProps {
 export default function Header({ isBordered }: HeaderProps) {
   const navigate = useNavigate()
   const [isDropdownOpen, setDropdownOpen] = useState(false)
-  
+
   const handleLogoClick = () => {
     navigate('/')
   }
@@ -34,7 +34,7 @@ export default function Header({ isBordered }: HeaderProps) {
     navigate('/editor')
   }
 
-  const { isLogin, token, logout } = useAuthStore()
+  const { isLogin, username, logout } = useAuthStore()
 
   return (
     <header
@@ -57,13 +57,14 @@ export default function Header({ isBordered }: HeaderProps) {
               onClick={handleUserNameClick}
               className="mr-4 md:mr-14 text-base md:text-xl cursor-pointer"
             >
-              {token} 님
+              {username} 님
             </span>
             {/* 드롭다운 메뉴 - 모바일에서만 표시 */}
             {isDropdownOpen && (
-              <div className={cn(
-                "absolute right-4 mt-2 w-22 bg-white text-black rounded-lg",
-                "shadow-md md:hidden text-center text-sm z-50"
+              <div
+                className={cn(
+                  'absolute right-0 mt-2 w-24 bg-white text-black rounded-lg',
+                  'shadow-md md:hidden text-center text-sm z-50'
                 )}
               >
                 <button
@@ -80,7 +81,7 @@ export default function Header({ isBordered }: HeaderProps) {
                     setDropdownOpen(false)
                     handleWriteClick()
                   }}
-                  className="block w-full px-4 py-2 t"
+                  className="block w-full px-4 py-2"
                 >
                   글쓰기
                 </button>

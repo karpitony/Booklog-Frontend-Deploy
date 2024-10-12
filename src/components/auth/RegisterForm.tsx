@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import AuthBtn from './AuthBtn'
-import { useAuthStore } from '../../stores/UseAuthStore'
+import { useAuthStore } from '../../stores/UseCurrentUserStore'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { registerSchema } from '../../validation/RegisterSchema'
@@ -44,11 +44,13 @@ export default function RegisterForm() {
     const authRequestData = toAuthRequest(data)
 
     try {
-      const response = await signUp(authRequestData)
-
-      console.log('회원가입 응답:', response)
-
-      navigate('/login')
+      if (!duplicatedState) {
+        const response = await signUp(authRequestData)
+        console.log('회원가입 응답:', response)
+        navigate('/login')
+      } else {
+        alert('이미 존재하는 아이디입니다.')
+      }
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error)
     }

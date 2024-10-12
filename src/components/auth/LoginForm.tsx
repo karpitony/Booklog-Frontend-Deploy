@@ -6,11 +6,12 @@ import User from '../../assets/icons/User.svg'
 import Lock from '../../assets/icons/Lock.svg'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../../services/AuthService'
-import { useAuthStore } from '../../stores/UseAuthStore'
+import { LoginRequest } from '../../model/LoginRequest'
+import { useAuthStore } from '../../stores/UseCurrentUserStore'
 
 export default function LoginForm() {
   const navigate = useNavigate()
-  const { login: loginAction } = useAuthStore()
+  const { setUsername, setAccessToken, setRefreshToken } = useAuthStore()
 
   const {
     register,
@@ -18,16 +19,24 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<AuthCredentials>()
 
+  const toLoginRequest = (data: AuthCredentials): LoginRequest => {
+    return {
+      id: data.username,
+      password: data.password,
+    }
+  }
+
   const onSubmit = async (data: AuthCredentials) => {
-    console.log('로그인 데이터:', data)
+    const loginRequestData = toLoginRequest(data)
 
     try {
-      const token = await login(data)
-      loginAction(token)
+      const response = await login(loginRequestData)
+      setAccessToken(response.accessToken)
+      setRefreshToken(response.refreshToken)
+      setUsername(loginRequestData.id)
       navigate(-1)
     } catch (error) {
       console.error('로그인 에러:', error)
-      alert('로그인 중 오류가 발생했습니다.')
     }
   }
 
