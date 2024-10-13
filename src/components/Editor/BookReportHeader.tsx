@@ -92,7 +92,10 @@ export default function BookReportHeaderEditor(
           </div>
         </div>
 
-        <Search setBookIsbn={setBookIsbn}/>
+        <Search 
+          bookIsbn={bookIsbn}
+          setBookIsbn={setBookIsbn}
+        />
       </div>
     </div>
   );

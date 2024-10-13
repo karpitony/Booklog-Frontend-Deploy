@@ -7,6 +7,7 @@ import Register from './pages/Register.tsx'
 import Editor from './pages/Editor.tsx'
 import Book from './pages/Book.tsx'
 import Article from './pages/Article.tsx'
+import RequestLogin from './pages/RequestLogin.tsx'
 
 export default function Routers() {
   const router = createBrowserRouter([
@@ -21,6 +22,7 @@ export default function Routers() {
         { path: '/register', element: <Register /> },
         { path: '/editor', element: <Editor /> },
         { path: '/article/:articleSlug', element: <Article /> },
+        { path: '/requestLogin', element: <RequestLogin /> },
       ],
     },
     {

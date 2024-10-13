@@ -4,13 +4,14 @@ import AuthBtn from './AuthBtn'
 import { AuthCredentials } from '../../model/AuthCredentials'
 import User from '../../assets/icons/User.svg'
 import Lock from '../../assets/icons/Lock.svg'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { login } from '../../services/AuthService'
 import { LoginRequest } from '../../model/LoginRequest'
 import { useAuthStore } from '../../stores/UseCurrentUserStore'
 
 export default function LoginForm() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { setUsername, setAccessToken, setRefreshToken } = useAuthStore()
 
   const {
@@ -28,13 +29,14 @@ export default function LoginForm() {
 
   const onSubmit = async (data: AuthCredentials) => {
     const loginRequestData = toLoginRequest(data)
+    const from = location.state?.from || '/'
 
     try {
       const response = await login(loginRequestData)
       setAccessToken(response.accessToken)
       setRefreshToken(response.refreshToken)
       setUsername(loginRequestData.id)
-      navigate(-1)
+      navigate(from)
     } catch (error) {
       console.error('로그인 에러:', error)
     }

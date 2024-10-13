@@ -54,7 +54,7 @@ export default function Editor() {
           } else {
             setTitle(response.title);
             setContext(response.content);
-            setBookIsbn(response.id.toString());
+            setBookIsbn(response.book.isbn);
             setThumbnail(response.file.physicalPath); // 수정: 썸네일이 URL로 제공될 경우 처리
             setIsPostOk(true);
           }

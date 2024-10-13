@@ -13,6 +13,7 @@ interface ArticleData {
   title: string;
   thumbnail?: string;
   context: string;
+  bookId: number;
   bookIsbn: string;
   date: string;
 }
@@ -38,6 +39,7 @@ useEffect(() => {
     setArticleData({
       title: '스벨트는 우주 최강 프레임워크인 것 같다.',
       context: '아무래도 리액트를 다 스벨트로 갈아엎어 버리고 싶다. 나는 스벨트를 할 줄 모른다.',
+      bookId: 64,
       bookIsbn: '9791193926161',
       date: '2021-01-01',
       thumbnail: undefined,
@@ -56,7 +58,8 @@ useEffect(() => {
           const tempData = {
             title: response.title,
             context: response.content,
-            bookIsbn: response.id.toString(),
+            bookId: response.id,
+            bookIsbn: response.book.isbn,
             date: response.createdAt,
             thumbnail: response.file?.physicalPath,
           };

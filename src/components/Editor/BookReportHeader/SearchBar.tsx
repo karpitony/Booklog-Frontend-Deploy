@@ -3,12 +3,13 @@ import MagnifyingGlass from '../../../assets/icons/MagnifyingGlass.svg';
 import { searchBooks } from '../../../services/BackendBookApi';
 
 interface SearchBarProps {
-  readBookTitle: string;
+  readBookTitle: string ;
   onSearch: (searchText: string) => void;
   setReadBookTitle: (value: string) => void;
+  isSearchOk: boolean;
 }
 
-export default function SearchBar({ readBookTitle, onSearch, setReadBookTitle }: SearchBarProps) {
+export default function SearchBar({ readBookTitle, onSearch, setReadBookTitle, isSearchOk }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleButtonClick = () => {
@@ -28,7 +29,8 @@ export default function SearchBar({ readBookTitle, onSearch, setReadBookTitle }:
       return;
     }
     e.preventDefault();
-    
+
+    if (isSearchOk) {
     // 검색어를 부모 컴포넌트에 전달
     onSearch(readBookTitle);
 
@@ -42,6 +44,9 @@ export default function SearchBar({ readBookTitle, onSearch, setReadBookTitle }:
       }
     }
     searchBookFromBackend();
+    } else {
+      alert('검색할 수 없습니다.')
+    }
   };
 
   return (

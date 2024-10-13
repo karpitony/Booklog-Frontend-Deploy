@@ -6,6 +6,7 @@ import { useCurrentBookState } from '../stores/UseCurrentBookStore.ts'
 import { getReviewsByBookId } from '../services/ReviewService.ts'
 import { ReviewListResponse } from '../model/ReviewListResponse.ts'
 import { ErrorResponse } from '../model/ReviewResponse.ts'
+import { Review } from '../model/ReviewListResponse.ts'
 
 export function useBookDetails() {
   const { bookId, setBookId } = useCurrentBookState()
@@ -13,6 +14,7 @@ export function useBookDetails() {
   const navigate = useNavigate()
   const [isAccessDenied, setIsAccessDenied] = useState(false)
   const [isReviewed, setIsReviewed] = useState(false)
+  const [reviews, setReviews] = useState<Review[]>([])
 
   useEffect(() => {
     const fetchBookData = async () => {
@@ -35,6 +37,7 @@ export function useBookDetails() {
 
           if ('reviews' in reviewsResponse) {
             console.log('리뷰 응답 : ', reviewsResponse.reviews)
+            setReviews(reviewsResponse.reviews)
             setIsReviewed(reviewsResponse.reviews.length > 0)
           } else {
             console.log('응답 없음 : ', reviewsResponse.message)
@@ -52,5 +55,6 @@ export function useBookDetails() {
     bookData: isAccessDenied ? null : bookData,
     isAccessDenied,
     isReviewed,
+    reviews,
   }
 }

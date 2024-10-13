@@ -17,6 +17,7 @@ export interface FileInfo {
 // 책 정보 인터페이스
 export interface BookInfo {
   id: number
+  isbn: string
   title: string
   author: string
   description: string
@@ -30,7 +31,7 @@ export interface ReviewDetailResponse {
   content: string
   name: string
   file: FileInfo
-  book: BookInfo[]
+  book: BookInfo
   createdAt: string
   updatedAt: string
 }
